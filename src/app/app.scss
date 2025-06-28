@@ -3,7 +3,7 @@
     color: var(--mat-sys-on-primary-container);
 
     padding: 8px 16px;
-    height: 56px;
+    height: var(--app-header-height);
 
     .nav-links {
         display: flex;
@@ -19,5 +19,11 @@
 }
 
 .app-content {
-    padding: 16px;
+    padding: var(--app-container-padding);
+    box-sizing: border-box;
+
+    min-height: calc(100vh - var(--app-header-height));
+
+    display: flex;
+    flex-direction: column;
 }
