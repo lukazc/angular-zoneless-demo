@@ -1,11 +1,9 @@
-import { Component, provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NotFound } from './not-found';
-
-@Component({ template: '' })
-class MockDashboard { }
+import { provideRouter } from '@angular/router';
 
 describe('NotFound', () => {
     let fixture: ComponentFixture<NotFound>;
@@ -15,6 +13,7 @@ describe('NotFound', () => {
             imports: [NotFound],
             providers: [
                 provideZonelessChangeDetection(),
+                provideRouter([]),
             ]
         }).compileComponents();
 
