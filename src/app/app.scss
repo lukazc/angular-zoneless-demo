@@ -1,0 +1,23 @@
+.app-header {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+
+    padding: 8px 16px;
+    height: 56px;
+
+    .nav-links {
+        display: flex;
+
+        .nav-link {
+            color: var(--mat-sys-on-primary-container);
+
+            &.nav-link-selected {
+                background: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
+            }
+        }
+    }
+}
+
+.app-content {
+    padding: 16px;
+}
