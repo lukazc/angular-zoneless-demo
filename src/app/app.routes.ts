@@ -8,7 +8,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: Dashboard },
     { path: 'pokemon', children: [
         { path: '', component: PokemonList },
-        { path: 'detail/:id', component: PokemonDetail }
+        { path: ':id', component: PokemonDetail }
     ]},
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     { path: '**', component: NotFound }

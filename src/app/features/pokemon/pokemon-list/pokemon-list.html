@@ -1,1 +1,71 @@
-<p>pokemon-list works!</p>
+<div class="pokemon-list-container">
+    <h2>Pokémon List</h2>
+    <table mat-table [dataSource]="pokemonData()" class="mat-elevation-z8 pokemon-table">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let pokemon">{{pokemon.id}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let pokemon">
+                <div class="pokemon-name-cell">
+                    <div class="name">{{pokemon.displayName}}</div>
+                    @if (isMobile()) {
+                        <div class="mobile-details">
+                            <span class="detail">ID: {{pokemon.id}}</span>
+                            <span class="detail">{{pokemon.height / 10}}m • {{pokemon.weight / 10}}kg</span>
+                        </div>
+                    }
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Height Column -->
+        <ng-container matColumnDef="height">
+            <th mat-header-cell *matHeaderCellDef>Height</th>
+            <td mat-cell *matCellDef="let pokemon">{{pokemon.height}}</td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef>Weight</th>
+            <td mat-cell *matCellDef="let pokemon">{{pokemon.weight}}</td>
+        </ng-container>
+
+        <!-- Types Column -->
+        <ng-container matColumnDef="types">
+            <th mat-header-cell *matHeaderCellDef>Types</th>
+            <td mat-cell *matCellDef="let pokemon">
+                <div class="types-container">
+                    @for (type of pokemon.types; track type) {
+                        <span class="type-badge">{{ type }}</span>
+                    }
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Image Column -->
+        <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef>Image</th>
+            <td mat-cell *matCellDef="let pokemon">
+                @if (getImageUrl(pokemon)) {
+                <img [src]="getImageUrl(pokemon)" [alt]="pokemon.displayName" style="width: 50px; height: 50px;">
+                }
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="currentDisplayedColumns()"></tr>
+        <tr mat-row 
+            *matRowDef="let pokemon; columns: currentDisplayedColumns();" 
+            (click)="onRowClick(pokemon)"
+            class="clickable-row">
+        </tr>
+    </table>
+
+    <mat-paginator class="paginator" [length]="totalRecords()" [pageSize]="pageSize()" [pageIndex]="currentPage()"
+        [pageSizeOptions]="[5, 10, 20, 50]" (page)="onPageChange($event)" showFirstLastButtons>
+    </mat-paginator>
+</div>
