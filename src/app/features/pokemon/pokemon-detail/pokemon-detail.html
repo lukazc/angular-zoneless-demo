@@ -1,1 +1,57 @@
-<p>pokemon-detail works!</p>
+<div class="pokemon-detail-container">
+    <div class="action-buttons">
+        <button mat-raised-button (click)="goBack()" color="primary">
+            ← Back to List
+        </button>
+    </div>
+
+    @if (loading()) {
+    <div class="loading-container">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Loading Pokemon details...</p>
+    </div>
+    } @else if (error()) {
+    <mat-card class="error-card">
+        <mat-card-header>
+            <mat-card-title>Error</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p>{{ error() }}</p>
+        </mat-card-content>
+    </mat-card>
+    } @else if (pokemon()) {
+    <mat-card class="pokemon-card">
+        <mat-card-header>
+            <mat-card-title>{{ pokemon()!.displayName || pokemon()!.name }}</mat-card-title>
+            <mat-card-subtitle>ID: {{ pokemon()!.id }}</mat-card-subtitle>
+        </mat-card-header>
+
+        @if (getImageUrl()) {
+        <div class="pokemon-image">
+            <img [src]="getImageUrl()" [alt]="pokemon()!.displayName || pokemon()!.name">
+        </div>
+        }
+
+        <mat-card-content>
+            <div class="pokemon-stats">
+                <div class="stat-row">
+                    <span class="label">Height:</span>
+                    <span class="value">{{ pokemon()!.height / 10 }} m</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Weight:</span>
+                    <span class="value">{{ pokemon()!.weight / 10 }} kg</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Types:</span>
+                    <span class="value">
+                        @for (type of pokemon()!.types; track type) {
+                        <span class="type-badge">{{ type }}</span>
+                        }
+                    </span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    }
+</div>
