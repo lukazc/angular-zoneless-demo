@@ -2,13 +2,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { NamedAPIResourceList, Pokemon } from '../../models/pokemon.model';
 import { PokemonApi } from './pokemon-api.service';
 
 describe('PokemonApi', () => {
     let service: PokemonApi;
     let httpMock: HttpTestingController;
-    const baseUrl = 'https://pokeapi.co/api/v2';
+    const graphqlUrl = 'https://graphql.pokeapi.co/v1beta2';
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -32,86 +31,75 @@ describe('PokemonApi', () => {
     });
 
     describe('getPokemonList', () => {
-        it('should fetch pokemon list with default parameters', () => {
-            const mockResponse: NamedAPIResourceList = {
-                count: 1302,
-                next: `${baseUrl}/pokemon?offset=20&limit=20`,
-                previous: '',
-                results: [
-                    { name: 'bulbasaur', url: `${baseUrl}/pokemon/1/` },
-                    { name: 'ivysaur', url: `${baseUrl}/pokemon/2/` }
-                ]
+        it('should fetch and map pokemon list with default parameters', () => {
+            const mockGraphQLResponse = {
+                data: {
+                    pokemon: [
+                        {
+                            id: 25,
+                            name: 'pikachu',
+                            height: 4,
+                            weight: 60,
+                            pokemontypes: [
+                                { type: { name: 'electric' } }
+                            ],
+                            pokemonsprites: [
+                                { sprites: { other: { home: { front_default: 'pikachu.png', front_shiny: 'pikachu-shiny.png' } }, versions: { 'generation-i': { red: { front_default: 'red.png' } } } } }
+                            ]
+                        }
+                    ]
+                }
             };
-
-            service.getPokemonList().subscribe(response => {
-                expect(response).toEqual(mockResponse);
-                expect(response.results.length).toBe(2);
+            service.getPokemonList().subscribe(list => {
+                expect(list.length).toBe(1);
+                expect(list[0]).toEqual({
+                    id: 25,
+                    name: 'pikachu',
+                    height: 4,
+                    weight: 60,
+                    types: ['electric'],
+                    sprites: mockGraphQLResponse.data.pokemon[0].pokemonsprites[0].sprites
+                });
             });
-
-            const req = httpMock.expectOne(`${baseUrl}/pokemon?limit=20&offset=0`);
-            expect(req.request.method).toBe('GET');
-            req.flush(mockResponse);
-        });
-
-        it('should fetch pokemon list with custom parameters', () => {
-            const mockResponse: NamedAPIResourceList = {
-                count: 1302,
-                next: `${baseUrl}/pokemon?offset=50&limit=10`,
-                previous: `${baseUrl}/pokemon?offset=30&limit=10`,
-                results: []
-            };
-
-            service.getPokemonList({ limit: 10, offset: 40 }).subscribe(response => {
-                expect(response).toEqual(mockResponse);
-            });
-
-            const req = httpMock.expectOne(`${baseUrl}/pokemon?limit=10&offset=40`);
-            expect(req.request.method).toBe('GET');
-            req.flush(mockResponse);
+            const req = httpMock.expectOne(graphqlUrl);
+            expect(req.request.method).toBe('POST');
+            req.flush(mockGraphQLResponse);
         });
     });
 
     describe('getPokemonById', () => {
-        it('should fetch pokemon by ID', () => {
-            const mockPokemon = {
-                id: 1,
-                name: 'bulbasaur',
-                height: 7,
-                weight: 69,
-                types: [
-                    { slot: 1, type: { name: 'grass', url: `${baseUrl}/type/12/` } },
-                    { slot: 2, type: { name: 'poison', url: `${baseUrl}/type/4/` } }
-                ],
-                sprites: {
-                    front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
+        it('should fetch and map pokemon by ID', () => {
+            const mockGraphQLResponse = {
+                data: {
+                    pokemon: [
+                        {
+                            id: 25,
+                            name: 'pikachu',
+                            height: 4,
+                            weight: 60,
+                            pokemontypes: [
+                                { type: { name: 'electric' } }
+                            ],
+                            pokemonsprites: [
+                                { sprites: { other: { home: { front_default: 'pikachu.png', front_shiny: 'pikachu-shiny.png' } } } }
+                            ]
+                        }
+                    ]
                 }
-            } as any;
-
-            service.getPokemonById(1).subscribe(pokemon => {
-                expect(pokemon.id).toBe(1);
-                expect(pokemon.name).toBe('bulbasaur');
-            });
-
-            const req = httpMock.expectOne(`${baseUrl}/pokemon/1`);
-            expect(req.request.method).toBe('GET');
-            req.flush(mockPokemon);
-        });
-
-        it('should fetch pokemon by name', () => {
-            const mockPokemon: Partial<Pokemon> = {
-                id: 1,
-                name: 'bulbasaur',
-                height: 7,
-                weight: 69
             };
-
-            service.getPokemonById('bulbasaur').subscribe(pokemon => {
-                expect(pokemon.name).toBe('bulbasaur');
+            service.getPokemonById(25).subscribe(pokemon => {
+                expect(pokemon).toEqual({
+                    id: 25,
+                    name: 'pikachu',
+                    height: 4,
+                    weight: 60,
+                    types: ['electric'],
+                    sprites: mockGraphQLResponse.data.pokemon[0].pokemonsprites[0].sprites
+                });
             });
-
-            const req = httpMock.expectOne(`${baseUrl}/pokemon/bulbasaur`);
-            expect(req.request.method).toBe('GET');
-            req.flush(mockPokemon);
+            const req = httpMock.expectOne(graphqlUrl);
+            expect(req.request.method).toBe('POST');
+            req.flush(mockGraphQLResponse);
         });
     });
 });

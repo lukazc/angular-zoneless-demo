@@ -1,75 +1,116 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import {
-    NamedAPIResourceList,
-    Pokemon,
-    PokemonListParams,
-    PokemonSummary,
-    PokemonType
-} from '../../models/pokemon.model';
+import { catchError, map } from 'rxjs/operators';
+import { PokemonListParams, PokemonSummary } from '../../models/pokemon.model';
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class PokemonApi {
     private readonly http = inject(HttpClient);
-    private readonly baseUrl = 'https://pokeapi.co/api/v2';
+    private readonly graphqlUrl = 'https://graphql.pokeapi.co/v1beta2';
 
     /**
-     * Fetch a paginated list of Pokemon
+     * Fetches a paginated list of Pokemon with summary fields using the PokeAPI GraphQL endpoint.
+     *
+     * @param params Optional pagination settings: limit (number of results) and offset (start index).
+     * @returns Observable emitting an array of PokemonSummary objects.
      */
-    getPokemonList(params: PokemonListParams = {}): Observable<NamedAPIResourceList> {
+    getPokemonList(params: PokemonListParams = {}): Observable<PokemonSummary[]> {
         const { limit = 20, offset = 0 } = params;
-        const url = `${this.baseUrl}/pokemon?limit=${limit}&offset=${offset}`;
-
-        return this.http.get<NamedAPIResourceList>(url).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-    /**
-     * Fetch detailed Pokemon data by ID or name
-     */
-    getPokemonById(id: number | string): Observable<Pokemon> {
-        const url = `${this.baseUrl}/pokemon/${id}`;
-
-        return this.http.get<Pokemon>(url).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-    /**
-     * Map full Pokemon data to summary for list display
-     */
-    private mapToPokemonSummary(pokemon: Pokemon): PokemonSummary {
-        return {
-            id: pokemon.id,
-            name: pokemon.name,
-            url: `https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`,
-            height: pokemon.height,
-            weight: pokemon.weight,
-            types: pokemon.types.map((type: PokemonType) => type.type.name),
-            sprite: pokemon.sprites.front_default
+        const query = `
+            query getPokemonList($limit: Int!, $offset: Int!) {
+                pokemon(limit: $limit, offset: $offset) {
+                    id
+                    name
+                    height
+                    weight
+                    pokemontypes { type { name } }
+                    pokemonsprites { sprites }
+                }
+            }
+        `;
+        const body = {
+            query,
+            variables: { limit, offset },
+            operationName: 'getPokemonList'
         };
+        return this.http.post<any>(this.graphqlUrl, body).pipe(
+            map(res => {
+                if (res.errors && res.errors.length) {
+                    throw new Error(res.errors.map((e: any) => e.message).join('; '));
+                }
+                return res.data.pokemon.map((p: any) => ({
+                    id: p.id,
+                    name: p.name,
+                    height: p.height,
+                    weight: p.weight,
+                    types: p.pokemontypes.map((t: any) => t.type.name),
+                    sprites: p.pokemonsprites?.[0]?.sprites ?? null
+                }));
+            }),
+            catchError(this.handleError)
+        );
     }
 
     /**
-     * Handle HTTP errors
+     * Fetch detailed Pokemon data by ID using the GraphQL endpoint.
+     * @param id Pokemon ID (number).
+     * @returns Observable of a single PokemonSummary object, or null if not found.
      */
-    private handleError = (error: HttpErrorResponse): Observable<never> => {
-        let errorMessage = 'An unknown error occurred';
+    getPokemonById(id: number): Observable<PokemonSummary | null> {
+        const query = `
+            query getPokemon($id: Int) {
+                pokemon(where: { id: { _eq: $id } }) {
+                    id
+                    name
+                    height
+                    weight
+                    pokemontypes { type { name } }
+                    pokemonsprites { sprites }
+                }
+            }
+        `;
+        const variables = { id };
+        const body = {
+            query,
+            variables,
+            operationName: 'getPokemon'
+        };
+        return this.http.post<any>(this.graphqlUrl, body).pipe(
+            map(res => {
+                if (res.errors && res.errors.length) {
+                    throw new Error(res.errors.map((e: any) => e.message).join('; '));
+                }
+                const p = res.data.pokemon[0];
+                if (!p) return null;
+                return {
+                    id: p.id,
+                    name: p.name,
+                    height: p.height,
+                    weight: p.weight,
+                    types: p.pokemontypes.map((t: any) => t.type.name),
+                    sprites: p.pokemonsprites?.[0]?.sprites ?? null
+                };
+            }),
+            catchError(this.handleError)
+        );
+    }
 
+    /**
+     * Handle HTTP errors from API requests.
+     * @param error HttpErrorResponse from HttpClient.
+     * @returns Observable that throws a user-friendly error.
+     */
+    private handleError(error: HttpErrorResponse): Observable<never> {
+        let errorMessage = 'An unknown error occurred';
         if (error.error instanceof ErrorEvent) {
-            // Client-side error
             errorMessage = `Client Error: ${error.error.message}`;
         } else {
-            // Server-side error
             errorMessage = `Server Error: ${error.status} - ${error.message}`;
         }
-
-        console.error('Pokemon API Error:', errorMessage, error);
         return throwError(() => new Error(errorMessage));
-    };
+    }
 }
