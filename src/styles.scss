@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import 'leaflet/dist/leaflet.css';
+
 html, body { height: 100%; }
 body { 
     margin: 0; 
@@ -11,4 +13,5 @@ body {
 :root {
     --app-header-height: 56px;
     --app-container-padding: 16px;
+    --app-hover-color: rgba(0, 0, 0, 0.04);
 }

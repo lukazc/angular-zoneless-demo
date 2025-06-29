@@ -18,15 +18,15 @@
     max-width: 500px;
 
     .error-icon {
-        font-size: 80px;
-        width: 80px;
-        height: 80px;
+        font-size: 5rem;
+        width: 5rem;
+        height: 5rem;
         color: var(--mat-sys-error);
         margin-bottom: 24px;
     }
 
     .error-title {
-        font-size: 40px;
+        font-size: 2.5rem;
         font-weight: 600;
         margin: 0 0 24px 0;
         color: var(--mat-sys-on-surface);
@@ -34,14 +34,14 @@
     }
 
     .error-message {
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 1.5;
         margin: 0 0 32px 0;
         color: var(--mat-sys-on-surface-variant);
     }
 
     .home-button {
-        font-size: 16px;
+        font-size: 1rem;
         padding: 12px 24px;
 
         mat-icon {
@@ -53,17 +53,17 @@
 @media (max-width: 768px) {
     .not-found-content {
         .error-icon {
-            font-size: 60px;
-            width: 60px;
-            height: 60px;
+            font-size: 3.75rem;
+            width: 3.75rem;
+            height: 3.75rem;
         }
 
         .error-title {
-            font-size: 36px;
+            font-size: 2.25rem;
         }
 
         .error-message {
-            font-size: 14px;
+            font-size: 0.875rem;
         }
     }
 }

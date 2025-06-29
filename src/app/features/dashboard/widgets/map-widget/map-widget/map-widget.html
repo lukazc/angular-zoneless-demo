@@ -1,1 +1,24 @@
-<p>map-widget works!</p>
+<mat-card class="map-widget">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-icon>map</mat-icon>
+            Interactive Map
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{ selectedLocation().name }} - {{ selectedLocation().lat.toFixed(4) }}, {{
+            selectedLocation().lng.toFixed(4) }}
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="map-container" #mapContainer></div>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button matButton (click)="centerOnCurrentLocation()"
+            [attr.aria-label]="'Center map on current location'">
+            <mat-icon>my_location</mat-icon>
+            Center
+        </button>
+    </mat-card-actions>
+</mat-card>

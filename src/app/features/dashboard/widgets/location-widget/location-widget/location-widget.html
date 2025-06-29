@@ -1,1 +1,47 @@
-<p>location-widget works!</p>
+<mat-card class="location-widget">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-icon>location_on</mat-icon>
+            Locations ({{ locationCount() }})
+        </mat-card-title>
+        <mat-card-subtitle>
+            Click to select location on map
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-list class="location-list">
+            @for (location of locations(); track location.id) {
+            <mat-list-item class="location-item" [class.selected]="isLocationSelected()(location)"
+                (click)="onLocationSelect(location)" role="button" tabindex="0"
+                [attr.aria-label]="location.name">
+
+                <mat-icon matListItemIcon class="location-icon">
+                    {{ isLocationSelected()(location) ? 'my_location' : 'location_on' }}
+                </mat-icon>
+
+                <div matListItemTitle class="location-name">
+                    {{ location.name }}
+                </div>
+
+                @if (location.description) {
+                <div matListItemLine class="location-description">
+                    {{ location.description }}
+                </div>
+                }
+
+                <div matListItemLine class="location-coordinates">
+                    {{ location.lat.toFixed(4) }}, {{ location.lng.toFixed(4) }}
+                </div>
+            </mat-list-item>
+            }
+        </mat-list>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button matButton (click)="onResetToDefault()" [attr.aria-label]="'Reset to default location'">
+            <mat-icon>home</mat-icon>
+            Reset to Default
+        </button>
+    </mat-card-actions>
+</mat-card>
