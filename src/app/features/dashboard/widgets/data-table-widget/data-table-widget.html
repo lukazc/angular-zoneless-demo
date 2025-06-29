@@ -1,1 +1,78 @@
-<p>data-table works!</p>
+<mat-card class="data-table-widget">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-icon>table_chart</mat-icon>
+            Hourly Data Summary
+        </mat-card-title>
+        <mat-card-subtitle>
+            Value distribution over time ({{ hourlyData().length }} hours)
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        @if (isLoading()) {
+        <div class="loading-state">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Loading hourly data...</p>
+        </div>
+        } @else if (hasError()) {
+        <div class="error-state">
+            <p class="error-message">{{ error() }}</p>
+            <button matButton="elevated" color="primary" type="button" (click)="retry()"
+                aria-label="Retry loading data">
+                <mat-icon>refresh</mat-icon>
+                Retry
+            </button>
+        </div>
+        } @else if (!hasData()) {
+        <div class="empty-state">
+            <p>No data available</p>
+        </div>
+        } @else {
+        <div class="table-container">
+            <table mat-table [dataSource]="hourlyData()" class="data-table">
+
+                <!-- Time Column -->
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef>Time</th>
+                    <td mat-cell *matCellDef="let dataPoint">{{ dataPoint.hour }}</td>
+                </ng-container>
+
+                <!-- Average Column -->
+                <ng-container matColumnDef="average">
+                    <th mat-header-cell *matHeaderCellDef>Average</th>
+                    <td mat-cell *matCellDef="let dataPoint">{{ dataPoint.averageValue }}</td>
+                </ng-container>
+
+                <!-- Peak Column -->
+                <ng-container matColumnDef="peak">
+                    <th mat-header-cell *matHeaderCellDef>Peak</th>
+                    <td mat-cell *matCellDef="let dataPoint" class="peak">{{ dataPoint.maxValue }}</td>
+                </ng-container>
+
+                <!-- Minimum Column -->
+                <ng-container matColumnDef="minimum">
+                    <th mat-header-cell *matHeaderCellDef>Minimum</th>
+                    <td mat-cell *matCellDef="let dataPoint" class="minimum">{{ dataPoint.minValue }}</td>
+                </ng-container>
+
+                <!-- Data Points Column -->
+                <ng-container matColumnDef="dataPoints">
+                    <th mat-header-cell *matHeaderCellDef>Data Points</th>
+                    <td mat-cell *matCellDef="let dataPoint">{{ dataPoint.dataPointsCount }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        }
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button matButton (click)="retry()" [attr.aria-label]="'Refresh data'">
+            <mat-icon>refresh</mat-icon>
+            Refresh Data
+        </button>
+    </mat-card-actions>
+</mat-card>
