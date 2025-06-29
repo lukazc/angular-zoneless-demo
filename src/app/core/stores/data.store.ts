@@ -135,22 +135,19 @@ export class DataStore {
           label: 'Average Value',
           data: hourlyData.map(point => point.averageValue),
           borderColor: '#1976d2',
-          backgroundColor: 'rgba(25, 118, 210, 0.1)',
-          tension: 0.4
+          backgroundColor: 'rgba(25, 118, 210, 0.7)'
         },
         {
           label: 'Peak Value',
           data: hourlyData.map(point => point.maxValue),
           borderColor: '#d32f2f',
-          backgroundColor: 'rgba(211, 47, 47, 0.1)',
-          tension: 0.4
+          backgroundColor: 'rgba(211, 47, 47, 0.7)'
         },
         {
           label: 'Minimum Value',
           data: hourlyData.map(point => point.minValue),
           borderColor: '#388e3c',
-          backgroundColor: 'rgba(56, 142, 60, 0.1)',
-          tension: 0.4
+          backgroundColor: 'rgba(56, 142, 60, 0.7)'
         }
       ]
     };

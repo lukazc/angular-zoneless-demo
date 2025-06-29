@@ -64,8 +64,8 @@ export interface ChartDataset {
   /** Fill/background color */
   backgroundColor: string;
   
-  /** Line tension for smooth curves */
-  tension: number;
+  /** Line tension for smooth curves (optional, for line charts) */
+  tension?: number;
 }
 
 /**

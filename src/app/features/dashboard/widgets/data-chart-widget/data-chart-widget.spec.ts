@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataChartWidget } from './data-chart-widget';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('DataChartWidget', () => {
     let component: DataChartWidget;
@@ -11,7 +13,9 @@ describe('DataChartWidget', () => {
         await TestBed.configureTestingModule({
             imports: [DataChartWidget],
             providers: [
-                provideZonelessChangeDetection()
+                provideZonelessChangeDetection(),
+                provideHttpClient(),
+                provideHttpClientTesting()
             ]
         })
             .compileComponents();
@@ -23,5 +27,25 @@ describe('DataChartWidget', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
+    });
+
+    it('should initialize with bar chart type', () => {
+        expect(component.chartType()).toBe('bar');
+    });
+
+    it('should change chart type when changeChartType is called', () => {
+        component.changeChartType('line');
+        expect(component.chartType()).toBe('line');
+
+        component.changeChartType('bar');
+        expect(component.chartType()).toBe('bar');
+    });
+
+    it('should expose store signals', () => {
+        expect(component.isLoading).toBeDefined();
+        expect(component.hasError).toBeDefined();
+        expect(component.error).toBeDefined();
+        expect(component.hasData).toBeDefined();
+        expect(component.chartData).toBeDefined();
     });
 });
