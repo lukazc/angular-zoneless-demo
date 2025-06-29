@@ -48,4 +48,11 @@ describe('DataChartWidget', () => {
         expect(component.hasData).toBeDefined();
         expect(component.chartData).toBeDefined();
     });
+
+    it('should initialize with all datasets visible', () => {
+        const visibility = component.datasetVisibility();
+        expect(visibility.average).toBe(true);
+        expect(visibility.peak).toBe(true);
+        expect(visibility.minimum).toBe(true);
+    });
 });

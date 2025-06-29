@@ -29,6 +29,13 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
     // Chart type signal for toggling between bar and line charts
     readonly chartType = signal<ChartType>('bar');
 
+    // Dataset visibility tracking to persist across chart type changes
+    readonly datasetVisibility = signal({
+        average: true,
+        peak: true,
+        minimum: true
+    });
+
     // Template reference to canvas
     readonly canvasRef = viewChild<ElementRef<HTMLCanvasElement>>('chartCanvas');
 
@@ -72,8 +79,9 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
         const ctx = canvas.nativeElement.getContext('2d');
         if (!ctx) return;
 
-        // Destroy existing chart before creating new one
+        // Capture current visibility state before destroying existing chart
         if (this.chart) {
+            this.captureDatasetVisibility();
             this.chart.destroy();
         }
 
@@ -144,6 +152,9 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
         };
 
         this.chart = new Chart(ctx, config);
+        
+        // Restore dataset visibility after chart creation
+        this.restoreDatasetVisibility();
     }
 
     /**
@@ -167,5 +178,38 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
         if (this.chart) {
             this.chart.destroy();
         }
+    }
+
+    /**
+     * Capture current dataset visibility state before destroying chart
+     */
+    private captureDatasetVisibility(): void {
+        if (!this.chart) return;
+        
+        // Capture visibility for each dataset (average, peak, minimum)
+        const visibility = {
+            average: this.chart.isDatasetVisible(0),
+            peak: this.chart.isDatasetVisible(1),
+            minimum: this.chart.isDatasetVisible(2)
+        };
+        
+        this.datasetVisibility.set(visibility);
+    }
+
+    /**
+     * Restore dataset visibility after creating new chart
+     */
+    private restoreDatasetVisibility(): void {
+        if (!this.chart) return;
+        
+        const visibility = this.datasetVisibility();
+        
+        // Apply visibility to each dataset
+        this.chart.setDatasetVisibility(0, visibility.average);
+        this.chart.setDatasetVisibility(1, visibility.peak);
+        this.chart.setDatasetVisibility(2, visibility.minimum);
+        
+        // Update chart without animation to reflect visibility changes
+        this.chart.update('none');
     }
 }
