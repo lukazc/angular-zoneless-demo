@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { PokemonListParams, PokemonSummary } from '../../models/pokemon.model';
+import { PokemonListParams, PokemonSummary, PokemonListResult } from '../../models/pokemon.model';
 
 
 @Injectable({
@@ -16,9 +16,9 @@ export class PokemonApi {
      * Fetches a paginated list of Pokemon with summary fields using the PokeAPI GraphQL endpoint.
      *
      * @param params Optional pagination settings: limit (number of results) and offset (start index).
-     * @returns Observable emitting an array of PokemonSummary objects.
+     * @returns Observable emitting a PokemonListResult with pokemon array and total count.
      */
-    getPokemonList(params: PokemonListParams = {}): Observable<PokemonSummary[]> {
+    getPokemonList(params: PokemonListParams = {}): Observable<PokemonListResult> {
         const { limit = 20, offset = 0 } = params;
         const query = `
             query getPokemonList($limit: Int!, $offset: Int!) {
@@ -29,6 +29,16 @@ export class PokemonApi {
                     weight
                     pokemontypes { type { name } }
                     pokemonsprites { sprites }
+                    pokemonspecy {
+                        pokemonspeciesnames(where: { language: { name: { _eq: "en" } } }) {
+                            name
+                        }
+                    }
+                }
+                pokemon_aggregate {
+                    aggregate {
+                        count
+                    }
                 }
             }
         `;
@@ -42,14 +52,18 @@ export class PokemonApi {
                 if (res.errors && res.errors.length) {
                     throw new Error(res.errors.map((e: any) => e.message).join('; '));
                 }
-                return res.data.pokemon.map((p: any) => ({
-                    id: p.id,
-                    name: p.name,
-                    height: p.height,
-                    weight: p.weight,
-                    types: p.pokemontypes.map((t: any) => t.type.name),
-                    sprites: p.pokemonsprites?.[0]?.sprites ?? null
-                }));
+                return {
+                    pokemon: res.data.pokemon.map((p: any) => ({
+                        id: p.id,
+                        name: p.name,
+                        displayName: p.pokemonspecy?.pokemonspeciesnames?.[0]?.name || p.name,
+                        height: p.height,
+                        weight: p.weight,
+                        types: p.pokemontypes.map((t: any) => t.type.name),
+                        sprites: p.pokemonsprites?.[0]?.sprites ?? null
+                    })),
+                    totalCount: res.data.pokemon_aggregate.aggregate.count
+                };
             }),
             catchError(this.handleError)
         );
@@ -70,6 +84,11 @@ export class PokemonApi {
                     weight
                     pokemontypes { type { name } }
                     pokemonsprites { sprites }
+                    pokemonspecy {
+                        pokemonspeciesnames(where: { language: { name: { _eq: "en" } } }) {
+                            name
+                        }
+                    }
                 }
             }
         `;
@@ -89,6 +108,7 @@ export class PokemonApi {
                 return {
                     id: p.id,
                     name: p.name,
+                    displayName: p.pokemonspecy?.pokemonspeciesnames?.[0]?.name || p.name,
                     height: p.height,
                     weight: p.weight,
                     types: p.pokemontypes.map((t: any) => t.type.name),

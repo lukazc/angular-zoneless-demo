@@ -45,16 +45,28 @@ describe('PokemonApi', () => {
                             ],
                             pokemonsprites: [
                                 { sprites: { other: { home: { front_default: 'pikachu.png', front_shiny: 'pikachu-shiny.png' } }, versions: { 'generation-i': { red: { front_default: 'red.png' } } } } }
-                            ]
+                            ],
+                            pokemonspecy: {
+                                pokemonspeciesnames: [
+                                    { name: 'Pikachu' }
+                                ]
+                            }
                         }
-                    ]
+                    ],
+                    pokemon_aggregate: {
+                        aggregate: {
+                            count: 1302
+                        }
+                    }
                 }
             };
-            service.getPokemonList().subscribe(list => {
-                expect(list.length).toBe(1);
-                expect(list[0]).toEqual({
+            service.getPokemonList().subscribe(result => {
+                expect(result.pokemon.length).toBe(1);
+                expect(result.totalCount).toBe(1302);
+                expect(result.pokemon[0]).toEqual({
                     id: 25,
                     name: 'pikachu',
+                    displayName: 'Pikachu',
                     height: 4,
                     weight: 60,
                     types: ['electric'],
@@ -82,7 +94,12 @@ describe('PokemonApi', () => {
                             ],
                             pokemonsprites: [
                                 { sprites: { other: { home: { front_default: 'pikachu.png', front_shiny: 'pikachu-shiny.png' } } } }
-                            ]
+                            ],
+                            pokemonspecy: {
+                                pokemonspeciesnames: [
+                                    { name: 'Pikachu' }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -91,6 +108,7 @@ describe('PokemonApi', () => {
                 expect(pokemon).toEqual({
                     id: 25,
                     name: 'pikachu',
+                    displayName: 'Pikachu',
                     height: 4,
                     weight: 60,
                     types: ['electric'],
