@@ -1,7 +1,6 @@
-import { Component, computed, inject, signal, HostListener } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 
@@ -16,7 +15,7 @@ import { PokemonApi } from '../../../core/services/pokemon-api/pokemon-api.servi
  */
 @Component({
   selector: 'app-pokemon-list',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule],
+  imports: [MatTableModule, MatPaginatorModule],
   templateUrl: './pokemon-list.html',
   styleUrl: './pokemon-list.scss'
 })
