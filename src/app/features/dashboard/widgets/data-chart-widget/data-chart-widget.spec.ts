@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataChart } from './data-chart';
+import { DataChartWidget } from './data-chart-widget';
 import { provideZonelessChangeDetection } from '@angular/core';
 
-describe('DataChart', () => {
-    let component: DataChart;
-    let fixture: ComponentFixture<DataChart>;
+describe('DataChartWidget', () => {
+    let component: DataChartWidget;
+    let fixture: ComponentFixture<DataChartWidget>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [DataChart],
+            imports: [DataChartWidget],
             providers: [
                 provideZonelessChangeDetection()
             ]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(DataChart);
+        fixture = TestBed.createComponent(DataChartWidget);
         component = fixture.componentInstance;
         await fixture.whenStable();
     });

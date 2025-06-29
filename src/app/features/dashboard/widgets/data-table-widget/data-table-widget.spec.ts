@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataWidget } from './data-widget';
+import { DataTableWidget } from './data-table-widget';
 import { provideZonelessChangeDetection } from '@angular/core';
 
-describe('DataWidget', () => {
-    let component: DataWidget;
-    let fixture: ComponentFixture<DataWidget>;
+describe('DataTableWidget', () => {
+    let component: DataTableWidget;
+    let fixture: ComponentFixture<DataTableWidget>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [DataWidget],
+            imports: [DataTableWidget],
             providers: [
                 provideZonelessChangeDetection()
             ]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(DataWidget);
+        fixture = TestBed.createComponent(DataTableWidget);
         component = fixture.componentInstance;
         await fixture.whenStable();
     });
