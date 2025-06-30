@@ -49,10 +49,10 @@ describe('DataChartWidget', () => {
         expect(component.chartData).toBeDefined();
     });
 
-    it('should initialize with all datasets visible', () => {
+    it('should initialize with only the average dataset visible', () => {
         const visibility = component.datasetVisibility();
         expect(visibility.average).toBe(true);
-        expect(visibility.peak).toBe(true);
-        expect(visibility.minimum).toBe(true);
+        expect(visibility.peak).toBe(false);
+        expect(visibility.minimum).toBe(false);
     });
 });

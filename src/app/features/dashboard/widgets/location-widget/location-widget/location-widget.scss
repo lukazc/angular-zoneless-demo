@@ -1,11 +1,13 @@
+:host {
+    height: 100%;
+}
+
 .location-widget {
     height: 100%;
     display: flex;
     flex-direction: column;
 
     mat-card-header {
-        padding-bottom: 16px;
-
         mat-card-title {
             display: flex;
             align-items: center;
@@ -80,7 +82,7 @@
     }
 
     mat-card-actions {
-        padding: 16px;
+        padding: 0 16px;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
 
         button {

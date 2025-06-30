@@ -1,0 +1,83 @@
+.dashboard-container {
+    padding: 0 5vw;
+}
+
+.widget-grid {
+    display: grid;
+    grid-template-areas:
+        "chart chart table table"
+        "chart chart table table"
+        "map   map   map   location"
+        "map   map   map   location";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    --dashboard-gaps: 20px;
+    --dashboard-grid-row-height: calc((100vh - var(--app-header-height) - var(--dashboard-gaps) * 3 - var(--app-container-padding) * 2) / 4);
+    grid-template-rows: var(--dashboard-grid-row-height) var(--dashboard-grid-row-height) var(--dashboard-grid-row-height) var(--dashboard-grid-row-height);
+    gap: var(--dashboard-gaps);
+    max-height: calc(100vh - var(--app-header-height) - var(--app-container-padding));
+}
+
+.widget-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-widget {
+    grid-area: chart;
+}
+
+.table-widget {
+    grid-area: table;
+}
+
+.map-widget {
+    grid-area: map;
+}
+
+.location-widget {
+    grid-area: location;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-container {
+        padding: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .widget-grid {
+        grid-template-areas:
+            "chart"
+            "table"
+            "map"
+            "location";
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        height: auto;
+        min-height: auto;
+    }
+
+    .widget-item {
+        height: 500px;
+
+        &:last-child {
+            padding-bottom: 24px;
+        }
+    }
+}
+
+@media (max-height: 600px) {
+    .widget-grid {
+        grid-template-rows: repeat(4, auto);
+        height: auto;
+        min-height: auto;
+    }
+
+    .widget-item {
+        height: 500px;
+
+        &:last-child {
+            padding-bottom: 24px;
+        }
+    }
+}

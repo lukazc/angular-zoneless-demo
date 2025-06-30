@@ -32,8 +32,8 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
     // Dataset visibility tracking to persist across chart type changes
     readonly datasetVisibility = signal({
         average: true,
-        peak: true,
-        minimum: true
+        peak: false,
+        minimum: false
     });
 
     // Template reference to canvas
@@ -108,7 +108,7 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
                 maintainAspectRatio: false,
                 plugins: {
                     title: {
-                        display: true,
+                        display: false,
                         text: `Hourly Value Data (${currentType.charAt(0).toUpperCase() + currentType.slice(1)} Chart)`,
                         font: {
                             size: 16,
@@ -119,14 +119,14 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
                         position: 'bottom',
                         labels: {
                             usePointStyle: true,
-                            padding: 20
+                            padding: 10
                         }
                     }
                 },
                 scales: {
                     x: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Time'
                         },
                         grid: {
@@ -135,7 +135,7 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
                     },
                     y: {
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Value'
                         },
                         grid: {

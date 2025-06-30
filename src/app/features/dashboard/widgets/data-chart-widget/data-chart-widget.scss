@@ -1,11 +1,13 @@
+:host {
+    height: 100%;
+}
+
 .data-chart-widget {
     height: 100%;
     display: flex;
     flex-direction: column;
 
     mat-card-header {
-        padding-bottom: 16px;
-
         mat-card-title {
             display: flex;
             align-items: center;
@@ -21,7 +23,6 @@
 
     mat-card-content {
         flex: 1;
-        overflow: hidden;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -51,7 +52,7 @@
     .chart-container {
         flex: 1;
         position: relative;
-        min-height: 300px;
+        // min-height: 300px;
         padding: 16px;
 
         canvas {
@@ -61,7 +62,7 @@
     }
 
     mat-card-actions {
-        padding: 8px 16px;
+        padding: 0 16px;
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         display: flex;
         justify-content: center;
@@ -80,8 +81,8 @@
     .data-chart-widget {
         mat-card-content {
             .chart-container {
-                padding: 8px;
                 min-height: 250px;
+                padding: 8px;
             }
         }
     }
@@ -89,7 +90,6 @@
 
 @media (max-width: 768px) {
     .data-chart-widget {
-        padding: 1rem;
 
         .widget-header h3 {
             font-size: 1.125rem;
@@ -97,7 +97,6 @@
 
         .chart-container {
             min-height: 250px;
-            padding: 0.5rem 0;
         }
     }
 }

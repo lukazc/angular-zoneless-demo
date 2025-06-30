@@ -1,17 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import 'leaflet/dist/leaflet.css';
+@import "leaflet/dist/leaflet.css";
 
-html, body { height: 100%; }
-body { 
-    margin: 0; 
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 
     background-color: var(--mat-sys-surface);
 }
-    
+
 :root {
     --app-header-height: 56px;
     --app-container-padding: 16px;
     --app-hover-color: rgba(0, 0, 0, 0.04);
+}
+
+.widget-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    mat-card {
+        position: relative;
+    }
+    
+    mat-card-header {
+        z-index: 2;
+        background: inherit;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 16px;
+
+        background: color-mix(in srgb, var(--mat-sys-primary-container) 40%, transparent);
+
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+
+    mat-card-content {
+        flex: 1;
+        overflow: auto;
+        padding: 0;
+    }
+
+    mat-card-actions {
+        z-index: 2;
+        background: inherit;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 0 16px;
+
+        background: color-mix(in srgb, var(--mat-sys-primary-container) 40%, transparent);
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
 }
