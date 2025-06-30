@@ -14,7 +14,7 @@
         </a>
         <span class="spacer"></span>
         @if (showDocumentationLink()) {
-        <a class="nav-link" matButton href="/docs/index.html" target="_blank">
+        <a class="nav-link" matButton [href]="documentationUrl()" target="_blank">
             <mat-icon>description</mat-icon>
             Documentation
         </a>

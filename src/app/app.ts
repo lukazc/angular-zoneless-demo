@@ -1,5 +1,4 @@
 import { Component, inject, computed, signal } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
@@ -25,7 +24,6 @@ import { LoadingService } from './core/services/loading.service';
 })
 export class App {
     private readonly loadingService = inject(LoadingService);
-    private readonly document = inject(DOCUMENT);
     private readonly breakpointObserver = inject(BreakpointObserver);
     
     /** Expose loading state to template */
@@ -37,10 +35,30 @@ export class App {
         { initialValue: { matches: false, breakpoints: {} } }
     );
     
+    /**
+     * Get the actual base URL where the app is deployed at runtime
+     */
+    private get baseUrl(): string {
+        const currentPath = window.location.pathname;
+        
+        // If we're on GitHub Pages, the path will include the repo name
+        if (currentPath.includes('/angular-zoneless-demo/')) {
+            const basePath = currentPath.substring(0, currentPath.indexOf('/angular-zoneless-demo/') + '/angular-zoneless-demo/'.length);
+            return `${window.location.origin}${basePath}`;
+        }
+        
+        // For local development or other deployments
+        return `${window.location.origin}/`;
+    }
+    
     /** Check if documentation is available (production/GitHub Pages) */
     readonly hasDocumentation = computed(() => {
-        const baseHref = this.document.querySelector('base')?.getAttribute('href') || '/';
-        return baseHref.includes('/angular-zoneless-demo/');
+        return window.location.pathname.includes('/angular-zoneless-demo/');
+    });
+    
+    /** Get the correct documentation URL relative to runtime base URL */
+    readonly documentationUrl = computed(() => {
+        return `${this.baseUrl}docs/index.html`;
     });
     
     /** Show documentation link only on desktop and when docs are available */
