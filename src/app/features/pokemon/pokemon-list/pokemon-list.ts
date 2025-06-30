@@ -150,6 +150,7 @@ export class PokemonList {
         this.pokemonData.set(result.pokemon);
         this.totalRecords.set(result.totalCount);
         this.loading.set(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: (error) => {
         console.error('Error loading pokemon:', error);

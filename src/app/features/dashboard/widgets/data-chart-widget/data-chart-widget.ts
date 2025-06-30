@@ -209,7 +209,6 @@ export class DataChartWidget implements OnInit, AfterViewInit, OnDestroy {
         this.chart.setDatasetVisibility(1, visibility.peak);
         this.chart.setDatasetVisibility(2, visibility.minimum);
         
-        // Update chart without animation to reflect visibility changes
-        this.chart.update('none');
+        this.chart.update('show');
     }
 }
