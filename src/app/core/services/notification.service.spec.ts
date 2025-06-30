@@ -31,7 +31,6 @@ describe('NotificationService', () => {
 
     expect(mockSnackBar.open).toHaveBeenCalledWith(message, 'Close', {
       duration: 8000,
-      panelClass: ['error-snackbar'],
       horizontalPosition: 'end',
       verticalPosition: 'top'
     });
@@ -49,7 +48,6 @@ describe('NotificationService', () => {
 
     expect(mockSnackBar.open).toHaveBeenCalledWith(message, 'Close', {
       duration: customDuration,
-      panelClass: ['error-snackbar'],
       horizontalPosition: 'end',
       verticalPosition: 'top'
     });

@@ -7,12 +7,12 @@ import { NotificationService } from '../services/notification.service';
 import { errorInterceptor } from './error-interceptor';
 
 describe('errorInterceptor', () => {
-    let notificationService: NotificationService;
+    let notificationService: jasmine.SpyObj<NotificationService>;
     const interceptor: HttpInterceptorFn = (req, next) =>
         TestBed.runInInjectionContext(() => errorInterceptor(req, next));
 
     beforeEach(() => {
-        const notificationSpy = jasmine.createSpyObj('NotificationService', ['showError']);
+        const notificationSpy = jasmine.createSpyObj('NotificationService', ['showSnackBar']);
 
         TestBed.configureTestingModule({
             providers: [
@@ -21,7 +21,7 @@ describe('errorInterceptor', () => {
             ]
         });
 
-        notificationService = TestBed.inject(NotificationService);
+        notificationService = TestBed.inject(NotificationService) as jasmine.SpyObj<NotificationService>;
     });
 
     it('should be created', () => {
