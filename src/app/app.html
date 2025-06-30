@@ -12,6 +12,13 @@
             <mat-icon>catching_pokemon</mat-icon>
             Pokemon
         </a>
+        <span class="spacer"></span>
+        @if (showDocumentationLink()) {
+        <a class="nav-link" matButton href="/docs/index.html" target="_blank">
+            <mat-icon>description</mat-icon>
+            Documentation
+        </a>
+        }
     </nav>
 </mat-toolbar>
 

@@ -1,59 +1,155 @@
-# AngularZonelessDemo
+# Angular Zoneless Change Detection Demo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+A modern Angular 20 dashboard application showcasing zoneless change detection, signals, and best practices. Features include interactive widgets, Pokemon data management, and comprehensive error handling.
+  
+  
+  
+## 🚀 Live Demo
 
-## Development server
+[View Live Application](https://lukazc.github.io/angular-zoneless-demo/)
 
-To start a local development server, run:
+## ⚡ Features
 
+- **Zoneless Architecture**: Built with Angular 20's experimental zoneless change detection
+- **Signal-Based State Management**: Reactive state management using Angular signals
+- **Interactive Dashboard**: Multiple widgets including maps, charts, and data tables
+- **Pokemon Data Browser**: Paginated table with detail views using GraphQL
+- **Material Design**: Modern UI with Angular Material components
+- **Responsive Design**: Mobile-first responsive layout
+- **Error Handling**: Global error interceptor with user-friendly notifications
+- **Loading States**: Global progress indicators and loading spinners
+- **Type Safety**: Full TypeScript implementation with strict mode
+
+
+
+## 📋 Prerequisites
+
+**Node.js Version Requirement**: `^20.19.0 || ^22.12.0 || ^24.0.0`
+
+Verify your Node.js version:
 ```bash
-ng serve
+node --version
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+If you need to install or update Node.js, visit [nodejs.org](https://nodejs.org/) or use a version manager like [nvm](https://github.com/nvm-sh/nvm).
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
+## 🛠️ Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/lukazc/angular-zoneless-demo.git
+   cd angular-zoneless-demo
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm start
+   ```
+
+4. **Open your browser**
+   Navigate to `http://localhost:4200/`
+
+## 🧪 Testing
+
+
+
+### Unit Tests
+Run the test suite with coverage:
 ```bash
-ng generate component component-name
+npm test
+
+# Run tests with coverage
+ng test --code-coverage
+
+# Run tests in CI mode (single run)
+ng test --watch=false --browsers=ChromeHeadless
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Test Results
+- All components have focused unit tests
+- Services and stores are fully tested
+- Interceptors have comprehensive test coverage
+- Current test coverage: 90%+
 
+
+
+## 🏗️ Building
+
+### Development Build
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
-
-To build the project run:
-
+### Production Build
 ```bash
-ng build
+npm run build:prod
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
+## 📚 Documentation Generation
+
+
+### Generate Documentation
 ```bash
-ng test
+# Generate TypeDoc documentation
+npm run docs
+
+# Serve documentation locally
+npm run docs:serve
 ```
 
-## Running end-to-end tests
+### View Documentation
+Documentation will be generated in the `public/docs` directory and can be:
+1. **Served locally**: `npm run docs:serve`
+2. **Deployed with the app**: Documentation is automatically included in production builds
+3. **Accessed via route**: Available at `/docs` in the running application
 
-For end-to-end (e2e) testing, run:
 
-```bash
-ng e2e
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/
+│   ├── core/                 # Core services, interceptors, stores
+│   │   ├── interceptors/     # HTTP interceptors
+│   │   ├── models/           # TypeScript interfaces
+│   │   ├── services/         # Singleton services
+│   │   └── stores/           # Signal-based stores
+│   ├── features/            # Feature modules
+│   │   ├── dashboard/       # Dashboard widgets
+│   │   └── pokemon/         # Pokemon data features
+│   └── shared/              # Shared components
+├── styles.scss              # Global styles
+└── index.html
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🔧 Technologies Used
 
-## Additional Resources
+- **Angular 20** - Framework with experimental zoneless support
+- **TypeScript** - Type-safe development
+- **Angular Material** - UI component library
+- **Chart.js** - Data visualization
+- **Leaflet** - Interactive maps
+- **RxJS** - Reactive programming
+- **Jasmine/Karma** - Testing framework
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙋‍♂️ Support
+
+If you have any questions or run into issues, please [open an issue](https://github.com/lukazc/angular-zoneless-demo/issues).
+
+---
