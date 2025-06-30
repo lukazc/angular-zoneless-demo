@@ -1,6 +1,21 @@
 <div class="pokemon-list-container">
     <h2>Pokémon List</h2>
-    <table mat-table [dataSource]="pokemonData()" class="mat-elevation-z8 pokemon-table">
+    
+    <!-- Error Display -->
+    @if (error()) {
+        <div class="error-container">
+            <div class="error-message">
+                <mat-icon>error</mat-icon>
+                <span>{{ error() }}</span>
+                <button matButton="elevated" (click)="retryLoadPokemon()">
+                    <mat-icon>refresh</mat-icon>
+                    Retry
+                </button>
+            </div>
+        </div>
+    } @else {
+        <!-- Pokemon Table -->
+        <table mat-table [dataSource]="pokemonData()" class="mat-elevation-z8 pokemon-table">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>ID</th>
@@ -65,7 +80,10 @@
         </tr>
     </table>
 
-    <mat-paginator class="paginator" [length]="totalRecords()" [pageSize]="pageSize()" [pageIndex]="currentPage()"
-        [pageSizeOptions]="[5, 10, 20, 50]" (page)="onPageChange($event)" showFirstLastButtons>
-    </mat-paginator>
+    @if (pokemonData().length) {
+        <mat-paginator class="paginator" [length]="totalRecords()" [pageSize]="pageSize()" [pageIndex]="currentPage()"
+            [pageSizeOptions]="[5, 10, 20, 50]" (page)="onPageChange($event)" showFirstLastButtons>
+        </mat-paginator>
+    }
+    }
 </div>

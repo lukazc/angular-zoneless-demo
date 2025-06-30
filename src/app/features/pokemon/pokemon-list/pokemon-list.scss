@@ -69,6 +69,34 @@
     .paginator {
         margin-top: 16px;
     }
+
+    .error-container {
+        margin: 24px 0;
+        padding: 20px;
+        background-color: #ffebee;
+        border: 1px solid #f44336;
+        border-radius: 8px;
+
+        .error-message {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d32f2f;
+
+            span {
+                flex: 1;
+                font-weight: 500;
+            }
+
+            button {
+                margin-left: auto;
+
+                mat-icon {
+                    margin-right: 4px;
+                }
+            }
+        }
+    }
 }
 
 @media (max-width: 768px) {
