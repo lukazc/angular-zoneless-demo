@@ -46,7 +46,8 @@ describe('DataApi', () => {
       expect(data).toEqual(mockRawData);
     });
 
-    const req = httpMock.expectOne('/podaci.json');
+    const expectedUrl = `${window.location.origin}/podaci.json`;
+    const req = httpMock.expectOne(expectedUrl);
     expect(req.request.method).toBe('GET');
     req.flush(mockRawData);
   });
@@ -56,7 +57,8 @@ describe('DataApi', () => {
       expect(data).toEqual({});
     });
 
-    const req = httpMock.expectOne('/podaci.json');
+    const expectedUrl = `${window.location.origin}/podaci.json`;
+    const req = httpMock.expectOne(expectedUrl);
     req.error(new ProgressEvent('Network error'));
   });
 
@@ -65,7 +67,8 @@ describe('DataApi', () => {
       expect(data).toEqual({});
     });
 
-    const req = httpMock.expectOne('/podaci.json');
+    const expectedUrl = `${window.location.origin}/podaci.json`;
+    const req = httpMock.expectOne(expectedUrl);
     req.error(new ProgressEvent('Parse error'));
   });
 });
